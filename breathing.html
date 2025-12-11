@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breathing Exercise - MindMate</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .breathing-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #E8F5F6 0%, #F0F4FF 50%, #FFF5F2 100%);
+            padding: var(--space-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .breathing-decoration {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: floatSlow 10s ease-in-out infinite;
+        }
+
+        .deco-1 {
+            width: 500px;
+            height: 500px;
+            background: var(--primary-light);
+            top: -150px;
+            right: -150px;
+        }
+
+        .deco-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--secondary-light);
+            bottom: -150px;
+            left: -150px;
+            animation-delay: 5s;
+        }
+
+        @keyframes floatSlow {
+
+            0%,
+            100% {
+                transform: translateY(0) scale(1);
+            }
+
+            50% {
+                transform: translateY(-40px) scale(1.1);
+            }
+        }
+
+        .breathing-content {
+            text-align: center;
+            z-index: 2;
+            max-width: 600px;
+        }
+
+        .breathing-title {
+            font-size: 2.5rem;
+            margin-bottom: var(--space-md);
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .breathing-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xl);
+        }
+
+        .breathing-circle-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: var(--space-xl) auto;
+        }
+
+        .breathing-circle {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(110, 198, 202, 0.3) 0%, rgba(127, 162, 217, 0.1) 100%);
+            border: 4px solid var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 40px rgba(110, 198, 202, 0.3);
+        }
+
+        .breathing-circle.inhale {
+            transform: scale(1.5);
+            background: radial-gradient(circle, rgba(110, 198, 202, 0.5) 0%, rgba(127, 162, 217, 0.3) 100%);
+            box-shadow: 0 0 60px rgba(110, 198, 202, 0.5);
+        }
+
+        .breathing-circle.hold {
+            transform: scale(1.5);
+            background: radial-gradient(circle, rgba(127, 162, 217, 0.5) 0%, rgba(110, 198, 202, 0.3) 100%);
+        }
+
+        .breathing-circle.exhale {
+            transform: scale(1);
+            background: radial-gradient(circle, rgba(110, 198, 202, 0.2) 0%, rgba(127, 162, 217, 0.05) 100%);
+            box-shadow: 0 0 20px rgba(110, 198, 202, 0.2);
+        }
+
+        .breathing-instruction {
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-top: var(--space-lg);
+            min-height: 40px;
+            font-weight: 500;
+        }
+
+        .breathing-counter {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-top: var(--space-sm);
+        }
+
+        .breathing-controls {
+            display: flex;
+            gap: var(--space-md);
+            justify-content: center;
+            margin-top: var(--space-xl);
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            padding: var(--space-md) var(--space-xl);
+            border-radius: var(--radius-full);
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            min-width: 120px;
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-start:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-stop {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-back {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            max-width: 400px;
+            height: 8px;
+            background: rgba(110, 198, 202, 0.2);
+            border-radius: var(--radius-full);
+            margin: var(--space-lg) auto 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: var(--radius-full);
+            transition: width 1s linear;
+            width: 0%;
+        }
+
+        .benefits-card {
+            background: white;
+            padding: var(--space-lg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-top: var(--space-xl);
+            max-width: 500px;
+        }
+
+        .benefits-card h3 {
+            color: var(--primary-dark);
+            margin-bottom: var(--space-md);
+        }
+
+        .benefits-card ul {
+            text-align: left;
+            color: var(--text-secondary);
+            line-height: 2;
+        }
+
+        @media (max-width: 768px) {
+            .breathing-title {
+                font-size: 2rem;
+            }
+
+            .breathing-circle-container {
+                width: 250px;
+                height: 250px;
+            }
+
+            .breathing-circle {
+                width: 250px;
+                height: 250px;
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="breathing-container">
+        <div class="breathing-decoration deco-1"></div>
+        <div class="breathing-decoration deco-2"></div>
+
+        <div class="breathing-content">
+            <h1 class="breathing-title">🫁 Breathing Exercise</h1>
+            <p class="breathing-subtitle">4-7-8 Technique for Calm & Relaxation</p>
+
+            <div class="breathing-circle-container">
+                <div class="breathing-circle" id="breathing-circle">
+                    <span id="circle-text">Ready</span>
+                </div>
+            </div>
+
+            <div class="breathing-instruction" id="instruction">Click Start to begin</div>
+            <div class="breathing-counter" id="counter">Cycle: 0 / 4</div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+
+            <div class="breathing-controls">
+                <button class="control-btn btn-start" id="start-btn" onclick="startBreathing()">Start</button>
+                <button class="control-btn btn-stop" id="stop-btn" onclick="stopBreathing()"
+                    style="display:none;">Stop</button>
+                <button class="control-btn btn-back" onclick="window.location.href='dashboard.html'">Back to
+                    Dashboard</button>
+            </div>
+
+            <div class="benefits-card">
+                <h3>✨ Benefits of 4-7-8 Breathing</h3>
+                <ul>
+                    <li>Reduces anxiety and stress</li>
+                    <li>Helps you fall asleep faster</li>
+                    <li>Lowers blood pressure</li>
+                    <li>Improves emotional control</li>
+                    <li>Increases mindfulness</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let breathingInterval;
+        let cycleCount = 0;
+        const totalCycles = 4;
+        let currentPhase = 0; // 0: ready, 1: inhale, 2: hold, 3: exhale
+
+        const phases = [
+            { name: 'Inhale', duration: 4000, class: 'inhale', text: 'Breathe In' },
+            { name: 'Hold', duration: 7000, class: 'hold', text: 'Hold' },
+            { name: 'Exhale', duration: 8000, class: 'exhale', text: 'Breathe Out' }
+        ];
+
+        function startBreathing() {
+            document.getElementById('start-btn').style.display = 'none';
+            document.getElementById('stop-btn').style.display = 'inline-block';
+
+            cycleCount = 0;
+            currentPhase = 0;
+
+            runBreathingCycle();
+        }
+
+        function runBreathingCycle() {
+            if (cycleCount >= totalCycles) {
+                completedBreathing();
+                return;
+            }
+
+            const phase = phases[currentPhase];
+            const circle = document.getElementById('breathing-circle');
+            const circleText = document.getElementById('circle-text');
+            const instruction = document.getElementById('instruction');
+            const counter = document.getElementById('counter');
+            const progress = document.getElementById('progress');
+
+            // Remove all phase classes
+            circle.classList.remove('inhale', 'hold', 'exhale');
+
+            // Add current phase class
+            circle.classList.add(phase.class);
+            circleText.textContent = phase.text;
+            instruction.textContent = `${phase.name} for ${phase.duration / 1000} seconds`;
+
+            // Update counter
+            if (currentPhase === 0) {
+                cycleCount++;
+            }
+            counter.textContent = `Cycle: ${cycleCount} / ${totalCycles}`;
+
+            // Update progress bar
+            const totalDuration = phases.reduce((sum, p) => sum + p.duration, 0);
+            const completedTime = (cycleCount - 1) * totalDuration +
+                phases.slice(0, currentPhase + 1).reduce((sum, p) => sum + p.duration, 0);
+            const progressPercent = (completedTime / (totalCycles * totalDuration)) * 100;
+            progress.style.width = `${progressPercent}%`;
+
+            breathingInterval = setTimeout(() => {
+                currentPhase = (currentPhase + 1) % 3;
+                runBreathingCycle();
+            }, phase.duration);
+        }
+
+        function stopBreathing() {
+            clearTimeout(breathingInterval);
+            resetBreathing();
+        }
+
+        function completedBreathing() {
+            const circle = document.getElementById('breathing-circle');
+            const circleText = document.getElementById('circle-text');
+            const instruction = document.getElementById('instruction');
+            const progress = document.getElementById('progress');
+
+            circle.classList.remove('inhale', 'hold', 'exhale');
+            circleText.textContent = '✓ Done!';
+            instruction.textContent = 'Great job! You completed the breathing exercise.';
+            progress.style.width = '100%';
+
+            document.getElementById('start-btn').style.display = 'inline-block';
+            document.getElementById('start-btn').textContent = 'Start Again';
+            document.getElementById('stop-btn').style.display = 'none';
+        }
+
+        function resetBreathing() {
+            const circle = document.getElementById('breathing-circle');
+            const circleText = document.getElementById('circle-text');
+            const instruction = document.getElementById('instruction');
+            const counter = document.getElementById('counter');
+            const progress = document.getElementById('progress');
+
+            circle.classList.remove('inhale', 'hold', 'exhale');
+            circleText.textContent = 'Ready';
+            instruction.textContent = 'Click Start to begin';
+            counter.textContent = 'Cycle: 0 / 4';
+            progress.style.width = '0%';
+
+            document.getElementById('start-btn').style.display = 'inline-block';
+            document.getElementById('start-btn').textContent = 'Start';
+            document.getElementById('stop-btn').style.display = 'none';
+
+            cycleCount = 0;
+            currentPhase = 0;
+        }
+    </script>
+</body>
+
+</html>

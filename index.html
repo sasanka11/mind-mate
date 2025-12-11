@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="MindMate - Your AI-powered mental health companion. Get emotional support and track your mood.">
+    <title>MindMate - Mental Health Chatbot</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <a href="home.html" style="text-decoration: none; color: var(--primary-blue);">
+                    <h1>🧠 MindMate</h1>
+                </a>
+                <p>Your compassionate AI mental health companion</p>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="auth-tabs">
+                <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+                <button class="tab-btn" onclick="switchTab('signup')">Sign Up</button>
+            </div>
+
+            <!-- Alert Container -->
+            <div id="alert-container"></div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="auth-form active">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn btn-primary" id="login-btn">
+                    <span>Login</span>
+                </button>
+            </form>
+
+            <!-- Signup Form -->
+            <form id="signup-form" class="auth-form">
+                <div class="form-group">
+                    <label for="signup-name">Name</label>
+                    <input type="text" id="signup-name" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <input type="email" id="signup-email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" placeholder="Create a password (min 6 characters)"
+                        required minlength="6">
+                </div>
+                <button type="submit" class="btn btn-primary" id="signup-btn">
+                    <span>Sign Up</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Configuration -->
+    <script src="config.js"></script>
+    <!-- Main Application -->
+    <script src="app.js"></script>
+
+    <script>
+        // Tab switching
+        function switchTab(tab) {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const forms = document.querySelectorAll('.auth-form');
+
+            tabs.forEach(t => t.classList.remove('active'));
+            forms.forEach(f => f.classList.remove('active'));
+
+            if (tab === 'login') {
+                tabs[0].classList.add('active');
+                document.getElementById('login-form').classList.add('active');
+            } else {
+                tabs[1].classList.add('active');
+                document.getElementById('signup-form').classList.add('active');
+            }
+        }
+
+        // Initialize authentication on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            initAuth();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Chat with MindMate - AI-powered emotional support and mental health guidance.">
+    <title>Chat - MindMate</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="chat-container">
+        <!-- Sidebar for Chat History -->
+        <aside class="chat-sidebar">
+            <div class="sidebar-header">
+                <h2>💬 Chat History</h2>
+                <button class="btn btn-primary" onclick="createNewConversation()"
+                    style="width: 100%; margin-top: 1rem;">
+                    ➕ New Chat
+                </button>
+            </div>
+
+            <div class="chat-history">
+                <!-- Today's Conversations -->
+                <div class="history-section">
+                    <div class="history-date" onclick="toggleHistorySection('today')">
+                        <span>Today</span>
+                        <span class="history-count" id="today-count">0</span>
+                    </div>
+                    <div class="history-items" id="today-items"></div>
+                </div>
+
+                <!-- Yesterday's Conversations -->
+                <div class="history-section">
+                    <div class="history-date" onclick="toggleHistorySection('yesterday')">
+                        <span>Yesterday</span>
+                        <span class="history-count" id="yesterday-count">0</span>
+                    </div>
+                    <div class="history-items" id="yesterday-items" style="display: none;"></div>
+                </div>
+
+                <!-- Last Week's Conversations -->
+                <div class="history-section">
+                    <div class="history-date" onclick="toggleHistorySection('lastweek')">
+                        <span>Last Week</span>
+                        <span class="history-count" id="lastweek-count">0</span>
+                    </div>
+                    <div class="history-items" id="lastweek-items" style="display: none;"></div>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <button class="btn btn-outline" onclick="location.href='dashboard.html'" style="width: 100%;">
+                    📊 Dashboard
+                </button>
+                <button class="btn btn-accent" onclick="logout()" style="width: 100%; margin-top: 0.5rem;">
+                    Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <div class="chat-main">
+            <!-- Chat Header -->
+            <div class="chat-header">
+                <h1 id="chat-title">💬 MindMate Chat</h1>
+                <div class="nav-links">
+                    <a href="dashboard.html" class="btn btn-secondary" style="padding: 0.6rem 1.2rem;">Dashboard</a>
+                    <button class="btn btn-accent" onclick="logout()" style="padding: 0.6rem 1.2rem;">Logout</button>
+                </div>
+            </div>
+
+            <!-- Messages Container -->
+            <div class="chat-messages" id="chat-messages">
+                <!-- Messages will be dynamically added here -->
+                <div class="message bot">
+                    <div class="message-bubble">
+                        <p>Hello! I'm MindMate, your compassionate AI companion. 🌟</p>
+                        <p>I'm here to listen and support you. Feel free to share what's on your mind.</p>
+                        <div class="message-time" id="welcome-time"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Input -->
+            <div class="chat-input-container">
+                <div class="input-wrapper">
+                    <input type="text" id="message-input" placeholder="Type your message..."
+                        onkeypress="handleKeyPress(event)">
+                    <button class="btn btn-primary" onclick="sendMessage()" id="send-btn">
+                        <span>Send</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Configuration -->
+    <script src="config.js"></script>
+    <!-- Main Application -->
+    <script src="app.js"></script>
+
+    <script>
+        // Set welcome message time
+        document.getElementById('welcome-time').textContent = formatTime(new Date());
+
+        // Initialize chat on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            initChat();
+        });
+
+        // Handle Enter key press
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        // Toggle history section visibility
+        function toggleHistorySection(section) {
+            const items = document.getElementById(`${section}-items`);
+            items.style.display = items.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+</body>
+
+</html>

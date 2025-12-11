@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MindMate Dashboard - Track your emotional wellbeing and mood patterns.">
+    <title>Dashboard - MindMate</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <div class="dashboard-nav">
+                <div>
+                    <h1 class="greeting" id="user-greeting">Hello, Sasanka 👋</h1>
+                    <p style="color: var(--text-secondary); margin-top: 0.5rem;">Welcome to your mental wellness
+                        dashboard</p>
+                </div>
+                <div class="nav-links">
+                    <a href="chat.html" class="btn btn-primary">💬 Chat</a>
+                    <button class="btn btn-accent" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <!-- Top Row: Mood Journal + Daily Affirmation + Streak Counter -->
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-lg); margin-bottom: var(--space-xl);">
+                <!-- Mood Journal Widget -->
+                <div class="widget-card mood-journal">
+                    <h3>📝 Today's Mood Check-in</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: var(--space-md);">How are
+                        you feeling today?</p>
+                    <div class="mood-selector">
+                        <button class="mood-btn" onclick="saveMood('😊', 'happy')" title="Happy">😊</button>
+                        <button class="mood-btn" onclick="saveMood('😐', 'neutral')" title="Neutral">😐</button>
+                        <button class="mood-btn" onclick="saveMood('😢', 'sad')" title="Sad">😢</button>
+                        <button class="mood-btn" onclick="saveMood('😰', 'anxious')" title="Anxious">😰</button>
+                        <button class="mood-btn" onclick="saveMood('😡', 'angry')" title="Angry">😡</button>
+                    </div>
+                    <div id="mood-status"
+                        style="margin-top: var(--space-sm); font-size: 0.85rem; color: var(--primary-dark);"></div>
+                </div>
+
+                <!-- Daily Affirmation -->
+                <div class="widget-card affirmation-card">
+                    <h3>💬 Daily Affirmation</h3>
+                    <p class="affirmation-text" id="affirmation">You are doing your best, and that is enough.</p>
+                    <button class="btn btn-outline" onclick="refreshAffirmation()"
+                        style="margin-top: var(--space-md); width: 100%;">
+                        🔄 New Affirmation
+                    </button>
+                </div>
+
+                <!-- Streak Counter -->
+                <div class="widget-card streak-card">
+                    <h3>🔥 Your Streak</h3>
+                    <div class="streak-number" id="streak-count">0</div>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary);">Days of check-ins</p>
+                    <div style="margin-top: var(--space-sm); font-size: 0.85rem; color: var(--primary-dark);"
+                        id="streak-message">Keep it up!</div>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total Conversations</div>
+                    <div class="stat-value" id="total-conversations">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Most Common Emotion</div>
+                    <div class="stat-value" id="common-emotion" style="font-size: 1.8rem;">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">This Week</div>
+                    <div class="stat-value" id="this-week">0</div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: var(--space-lg); margin-top: var(--space-xl);">
+                <!-- Mood Chart -->
+                <div class="chart-container">
+                    <h2>📊 Weekly Mood Trends</h2>
+                    <canvas id="emotion-chart"></canvas>
+                </div>
+
+                <!-- Emotion Pie Chart -->
+                <div class="chart-container">
+                    <h2>🎨 Emotion Distribution</h2>
+                    <canvas id="emotion-pie-chart"></canvas>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions" style="margin-top: var(--space-xl);">
+                <div class="action-card" onclick="window.location.href='breathing.html'">
+                    <div class="action-icon">🫁</div>
+                    <h3 class="action-title">Breathing Exercise</h3>
+                    <p class="action-description">
+                        Take a moment to relax with guided 4-7-8 breathing
+                    </p>
+                </div>
+
+                <div class="action-card emergency" onclick="window.location.href='tel:988'">
+                    <div class="action-icon">🆘</div>
+                    <h3 class="action-title">Emergency Helpline</h3>
+                    <p class="action-description">
+                        24/7 crisis support: Call 988 for immediate help
+                    </p>
+                </div>
+
+                <!-- Mental Health Resources -->
+                <div class="action-card" style="background: linear-gradient(135deg, #B3C7EA 0%, #A8E6E8 100%);">
+                    <div class="action-icon">📚</div>
+                    <h3 class="action-title">Resources</h3>
+                    <p class="action-description">
+                        Access helpful mental health resources and guides
+                    </p>
+                </div>
+            </div>
+
+            <!-- Progress Tracker -->
+            <div class="widget-card progress-tracker" style="margin-top: var(--space-xl);">
+                <h3>📈 Your Progress</h3>
+                <p id="crisis-status" style="font-size: 1.1rem; margin: var(--space-md) 0;">
+                    <span id="days-since-crisis">-</span> days since last crisis alert
+                </p>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="progress-bar" style="width: 0%;"></div>
+                </div>
+                <p style="font-size: 0.9rem; color: var(--primary-dark); margin-top: var(--space-sm);"
+                    id="progress-message">
+                    You're making great progress! Keep prioritizing your mental health.
+                </p>
+            </div>
+
+            <!-- Crisis Alerts (hidden by default) -->
+            <div class="crisis-alerts" id="crisis-alerts-container" style="display: none; margin-top: var(--space-xl);">
+                <h2>⚠️ Crisis Alerts</h2>
+                <div id="crisis-alerts-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Configuration -->
+    <script src="config.js"></script>
+    <!-- Main Application -->
+    <script src="app.js"></script>
+
+    <script>
+        // Initialize dashboard on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            initDashboard();
+        });
+    </script>
+</body>
+
+</html>
